@@ -1,0 +1,187 @@
+Foreign Key
+===========
+Scenario: One Foreign Key (Driver to Ride Relationship)
+We’ll now establish a one-to-many relationship between `drivers` and `rides`, where one driver can have many rides.
+
+DDL (Create Table Statements):
+
+
+-- Creating the drivers table
+CREATE TABLE drivers (
+    driver_id INT PRIMARY KEY,
+    driver_name VARCHAR(100),
+    license_number VARCHAR(50) UNIQUE
+);
+
+-- Creating the rides table with driver_id as a foreign key
+CREATE TABLE rides (
+    ride_id INT PRIMARY KEY,
+    driver_id INT,
+    pickup_location VARCHAR(100),
+    dropoff_location VARCHAR(100),
+    ride_date DATETIME,
+    fare DECIMAL(10, 2),
+    FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)
+);
+
+
+Inserts (Successful Insertion):
+
+
+-- Inserting drivers
+INSERT INTO drivers (driver_id, driver_name, license_number)
+VALUES (101, 'John Doe', 'XYZ12345'), (102, 'Jane Smith', 'ABC67890');
+
+-- Inserting rides associated with each driver
+INSERT INTO rides (ride_id, driver_id, pickup_location, dropoff_location, ride_date, fare)
+VALUES
+(301, 101, 'Chennai', 'Coimbatore', '2024-12-01 08:00:00', 500.00),
+(302, 101, 'Chennai', 'Madurai', '2024-12-01 09:30:00', 600.00),
+(303, 102, 'Bangalore', 'Hyderabad', '2024-12-02 10:00:00', 700.00);
+
+
+Expected Output (Successful JOIN):
+
+To retrieve the details of the rides along with the driver's information, we can use an INNER JOIN:
+
+
+SELECT r.ride_id, r.pickup_location, r.dropoff_location, r.ride_date, r.fare, d.driver_name
+FROM rides r
+INNER JOIN drivers d ON r.driver_id = d.driver_id;
+
+
+Failure Case (Foreign Key Violation on Insert):
+
+If you try to insert a ride with a non-existing `driver_id` that doesn’t exist in the `drivers` table, it will fail due to the foreign key constraint:
+
+
+-- Attempting to insert a ride with a non-existing driver_id
+INSERT INTO rides (ride_id, driver_id, pickup_location, dropoff_location, ride_date, fare)
+VALUES (304, 999, 'Coimbatore', 'Chennai', '2024-12-03 10:00:00', 800.00);
+
+
+Error: This will fail because `driver_id = 999` does not exist in the `drivers` table, and the foreign key constraint ensures that only valid driver IDs can be referenced.
+
+---
+
+Scenario 2: Deleting Driver and Its Associated Rides
+
+Now, let's explore the deletion behavior when we delete a driver. If you delete a driver, you might want to know how it impacts the associated rides.
+
+Deletion of Driver (Without Cascade)
+
+When you delete a driver (say `driver_id = 101`) from the `drivers` table, if there are associated rides in the `rides` table, the deletion will fail because of the foreign key constraint (without `ON DELETE CASCADE`).
+
+
+-- Trying to delete a driver with existing rides in the rides table
+DELETE FROM drivers WHERE driver_id = 101;
+
+
+Error: The deletion will fail with an error like this:
+
+ERROR:  update or delete on table "drivers" violates foreign key constraint "rides_driver_id_fkey" on table "rides"
+
+
+This happens because the foreign key constraint prevents the deletion of a driver who has existing rides. The system does this to maintain referential integrity — there should be no orphaned rides without a valid driver.
+
+What Happens with `ON DELETE CASCADE`?
+
+If you want to automatically delete all rides associated with a driver when the driver is deleted, you can use the `ON DELETE CASCADE` option in the foreign key definition.
+
+Create Tables with `ON DELETE CASCADE` for Rides:
+
+
+-- Creating the rides table with ON DELETE CASCADE
+CREATE TABLE rides (
+    ride_id INT PRIMARY KEY,
+    driver_id INT,
+    pickup_location VARCHAR(100),
+    dropoff_location VARCHAR(100),
+    ride_date DATETIME,
+    fare DECIMAL(10, 2),
+    FOREIGN KEY (driver_id) REFERENCES drivers(driver_id) ON DELETE CASCADE
+);
+
+
+Now, if you delete a driver, all associated rides will be automatically deleted as well.
+
+
+-- Deleting driver 101 will also delete all rides associated with driver 101
+DELETE FROM drivers WHERE driver_id = 101;
+
+
+This will delete the driver and all the associated rides (`ride_id = 301, 302`), ensuring that there are no orphaned records in the `rides` table.
+
+Summary of Key Points Based on Your Questions:
+
+1. Foreign Key with One-to-Many:
+   - One driver can have many rides.
+   - We use a foreign key in the `rides` table (`driver_id`) to reference the `drivers` table.
+
+2. Failure Case on Insert:
+   - If you try to insert a ride with a `driver_id` that does not exist in the `drivers` table, the insert will fail due to the foreign key constraint.
+
+3. Deletions:
+   - Without `ON DELETE CASCADE`: If a driver is deleted, the deletion will fail if they have associated rides because of the foreign key constraint.
+   - With `ON DELETE CASCADE`: If a driver is deleted, all associated rides will be automatically deleted.
+
+4. Data Redundancy:
+   - Storing the `ride_id` in the `drivers` table would create data redundancy because each driver can have multiple rides. Instead, we store `driver_id` in the `rides` table to maintain a normalized structure and avoid repeating ride information in the `drivers` table.
+
+5. Importance of Foreign Keys:
+   - Foreign keys help maintain referential integrity by ensuring that relationships between tables (like `drivers` and `rides`) are valid and consistent.
+
+=====================================================================================================
+
+DEFAULT
+=======
+Sure! Let’s go through an example of using the `DEFAULT` constraint in SQL, which allows you to specify a default value for a column when no value is provided during an `INSERT`.
+
+Example: Using `DEFAULT` with `CREATE TABLE` and `INSERT`
+
+Let’s create a table named `customers`, where the `country` column has a default value of `'India'` in case no value is provided during insertion.
+
+1. Create Table with Default Value:
+
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    country VARCHAR(50) DEFAULT 'India'
+);
+
+
+- The `country` column has a default value of `'India'`. If you don’t specify a value for `country` while inserting, it will automatically take the default value `'India'`.
+
+2. Insert Data with and without Specifying `country`:
+
+- Inserting data with `country` specified:
+
+
+INSERT INTO customers (customer_id, customer_name, country)
+VALUES (1, 'John Doe', 'USA');
+
+
+- Inserting data without specifying `country`:
+
+
+INSERT INTO customers (customer_id, customer_name)
+VALUES (2, 'Jane Smith');
+
+
+3. Resulting Data in `customers` Table:
+
+- After executing both `INSERT` statements, the `customers` table will look like this:
+
+| customer_id | customer_name | country |
+|-------------|---------------|---------|
+| 1           | John Doe      | USA     |
+| 2           | Jane Smith    | India   |
+
+- In the second row, since no `country` value was provided, the default value `'India'` was automatically used for the `country` column.
+
+Summary of Key Points:
+
+- `DEFAULT` allows you to set a default value for a column if no value is provided during an `INSERT`.
+- In this case, when inserting a customer without specifying the `country`, it automatically uses `'India'`.
+
