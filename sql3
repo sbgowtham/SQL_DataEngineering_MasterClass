@@ -1,5 +1,138 @@
-Foreign Key
-===========
+ 1. PRIMARY KEY Constraint
+==========================
+When trying to insert a duplicate value into a PRIMARY KEY column, it will fail because primary keys must be unique.
+
+Example:
+sql
+CREATE TABLE rides (
+    ride_id INT PRIMARY KEY,
+    driver_id INT NOT NULL,
+    rider_id INT NOT NULL,
+    pickup_location VARCHAR(100) NOT NULL,
+    dropoff_location VARCHAR(100) NOT NULL,
+    ride_date DATETIME NOT NULL,
+    fare DECIMAL(10, 2) NOT NULL
+);
+
+
+Insert Data (Valid)
+sql
+INSERT INTO rides (ride_id, driver_id, rider_id, pickup_location, dropoff_location, ride_date, fare)
+VALUES
+(1, 101, 201, 'Chennai', 'Coimbatore', '2024-12-29 08:00:00', 500.00);
+
+
+ Insert Data (Fails due to duplicate ride_id)
+sql
+INSERT INTO rides (ride_id, driver_id, rider_id, pickup_location, dropoff_location, ride_date, fare)
+VALUES
+(1, 102, 202, 'Bangalore', 'Hyderabad', '2024-12-29 10:00:00', 800.00);
+
+
+Explanation:  
+The second INSERT statement will fail because the ride_id is a PRIMARY KEY, and 1 is already used in the table. Primary keys must be unique.
+
+---
+
+2. UNIQUE Constraint 
+=======================
+The UNIQUE constraint ensures that no two rows can have the same value in a column, but allows NULL values. If you try to insert a duplicate value in a column with a UNIQUE constraint, it will fail.
+
+ Example:
+sql
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE
+);
+
+
+
+INSERT INTO users (user_id, email)
+VALUES (1, 'user1@example.com');  -- First row, valid unique email
+
+INSERT INTO users (user_id, email)
+VALUES (2, 'user2@example.com');  -- Second row, valid unique email
+
+INSERT INTO users (user_id, email)
+VALUES (3, NULL);  -- Third row, valid as NULL is allowed
+
+INSERT INTO users (user_id, email)
+VALUES (4, 'user1@example.com');  -- Fails, duplicate non-NULL email
+
+INSERT INTO users (user_id, email)
+VALUES (5, NULL);  -- Valid, second NULL value is allowed
+
+Explanation:
+You can insert multiple NULL values because NULL is not considered a value in the traditional sense, so they are treated as distinct.
+
+However, non-NULL values must be unique in the column.
+In this example:
+
+The email column can have one or more NULL values, but each non-NULL email must be unique.
+---
+
+ 3. NOT NULL Constraint Failure
+
+The NOT NULL constraint ensures that a column cannot contain NULL values. If you try to insert a NULL value into a NOT NULL column, the operation will fail.
+
+ Example:
+sql
+CREATE TABLE rides (
+    ride_id INT PRIMARY KEY,
+    driver_id INT NOT NULL,
+    rider_id INT NOT NULL,
+    pickup_location VARCHAR(100) NOT NULL,
+    dropoff_location VARCHAR(100) NOT NULL,
+    ride_date DATETIME NOT NULL,
+    fare DECIMAL(10, 2) NOT NULL
+);
+
+
+ Insert Data (Valid)
+sql
+INSERT INTO rides (ride_id, driver_id, rider_id, pickup_location, dropoff_location, ride_date, fare)
+VALUES
+(3, 103, 203, 'Coimbatore', 'Chennai', '2024-12-29 14:00:00', 600.00);
+
+
+ Insert Data (Fails due to NULL in pickup_location)
+sql
+INSERT INTO rides (ride_id, driver_id, rider_id, pickup_location, dropoff_location, ride_date, fare)
+VALUES
+(4, 104, 204, NULL, 'Chennai', '2024-12-29 16:00:00', 700.00);
+
+
+Explanation:  
+The second INSERT will fail because pickup_location is defined as NOT NULL, and NULL is being inserted, which violates the constraint.
+
+
+
+ 
+---
+3. Check Constraint
+===================
+A "CHECK constraint" in SQL is a database constraint that enforces a specific condition on data within a table, ensuring that only values meeting that condition can be inserted or updated, thereby maintaining data integrity and consistency
+
+CHECK: Ensure that the fare is a positive number for each ride.
+CREATE TABLE riders (
+    rider_id INT PRIMARY KEY,
+    rider_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE rides (
+    ride_id INT PRIMARY KEY,
+    driver_id INT NOT NULL,
+    rider_id INT,
+    pickup_location VARCHAR(100) NOT NULL,
+    dropoff_location VARCHAR(100) NOT NULL,
+    ride_date DATETIME NOT NULL,
+    fare DECIMAL(10, 2) CHECK (fare > 0),
+    FOREIGN KEY (rider_id) REFERENCES riders(rider_id)
+);
+
+4. Foreign Key Constraint
+============================
 Scenario: One Foreign Key (Driver to Ride Relationship)
 We’ll now establish a one-to-many relationship between `drivers` and `rides`, where one driver can have many rides.
 
@@ -130,6 +263,16 @@ Summary of Key Points Based on Your Questions:
 
 5. Importance of Foreign Keys:
    - Foreign keys help maintain referential integrity by ensuring that relationships between tables (like `drivers` and `rides`) are valid and consistent.
+
+
+------------------------------------------
+ Summary of Failures:
+- PRIMARY KEY: Duplicate values for the primary key will cause an error (e.g., duplicate ride_id).
+- UNIQUE: Duplicate values in columns with UNIQUE constraints will fail (e.g., duplicate driver_name).
+- NOT NULL: Inserting NULL into a NOT NULL column will cause an error (e.g., NULL in pickup_location).
+- FOREIGN KEY: Inserting a value into a foreign key column that doesn't exist in the referenced table will fail (e.g., invalid rider_id).
+
+
 
 =====================================================================================================
 
