@@ -1,0 +1,43 @@
+-- String Handling 
+
+SELECT 
+    id,
+    customer_name,
+    -- Extract the length of the customer name
+    LENGTH(customer_name) AS name_length,
+    
+    -- Convert customer name to uppercase and lowercase
+    UPPER(customer_name) AS uppercase_name,
+    LOWER(customer_name) AS lowercase_name,
+    
+    -- Concatenate city and phone number with formatting
+    CONCAT(city, ' - ', COALESCE(phone_number, '00000')) AS contact_info,
+    
+    -- Extract a substring from the customer name
+    SUBSTRING(customer_name, 1, 5) AS name_prefix,
+    
+    -- Trim whitespace from a sample city string
+    TRIM('   ExampleCity   ') AS trimmed_city,
+    
+    -- Pad customer name on the left and right
+    LPAD(customer_name, 15, '*') AS left_padded_name,
+    RPAD(customer_name, 15, '-') AS right_padded_name,
+    
+    -- Replace spaces in customer name with underscores
+    REPLACE(customer_name, ' ', '_') AS updated_name,
+    
+    -- Find the position of the letter 'a' in customer name
+    INSTR(customer_name, 'a') AS position_of_a,
+    
+    -- Extract the first 5 and last 5 characters from the customer name
+    LEFT(customer_name, 5) AS first_5_chars,
+    RIGHT(customer_name, 5) AS last_5_chars,
+    
+    -- Reverse the customer name
+    REVERSE(customer_name) AS reversed_name,
+    
+    -- Format a sample number
+    FORMAT(9876543210, 2) AS formatted_number
+    
+FROM 
+    CustomerDetails;
