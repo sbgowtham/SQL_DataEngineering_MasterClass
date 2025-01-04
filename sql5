@@ -1,0 +1,74 @@
+-- null handling
+
+CREATE TABLE CustomerData (
+    id INT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    email VARCHAR(100),
+    phone_number VARCHAR(15),
+    address VARCHAR(200),
+    amount DECIMAL(10, 2)
+);
+
+INSERT INTO CustomerData VALUES
+(1, 'Ravi', 'ravi@example.com', '9876543210', 'Chennai', 5000.00),
+(2, 'Priya', NULL, '9876543211', 'Bangalore', NULL),
+(3, 'Arjun', 'arjun@example.com', NULL, 'Hyderabad', 1500.00),
+(4, 'Meena', NULL, NULL, 'Mumbai', 2500.00),
+(5, 'Karthik', 'karthik@example.com', '9876543212', NULL, 3000.00);
+
+IS NULL
+  ------
+SELECT 
+    COUNT(*) AS null_phone_count 
+FROM 
+    CustomerData 
+WHERE 
+    phone_number IS NULL;
+
+IS NOT NULL 
+  -------
+SELECT 
+    COUNT(*) AS null_phone_count 
+FROM 
+    CustomerData 
+WHERE 
+    phone_number IS NOT NULL;
+
+
+
+ Select Rows with at Least One Null
+   ---------------------------
+
+SELECT 
+    id, 
+    customer_name, 
+    email, 
+    phone_number, 
+    address 
+FROM 
+    CustomerData 
+WHERE 
+    email IS NULL 
+    OR phone_number IS NULL 
+    OR address IS NULL;
+
+
+INVALID
+  ------
+SELECT * 
+FROM CustomerData 
+WHERE email = NULL;  -- > Invalid 
+
+
+COLAESCE
+  -------
+SELECT 
+    customer_name, 
+    COALESCE(amount, 0) AS adjusted_amount 
+FROM 
+    CustomerData;
+
+
+IFNULL
+  ------
+SELECT customer_name, IFNULL(amount, 0) AS adjusted_amount FROM CustomerData;
