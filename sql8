@@ -1,0 +1,98 @@
+Display a Derived Value for Each Row
+SELECT 
+    customer_name, 
+    (SELECT MAX(order_amount) FROM Orders) AS max_order_amount
+FROM Customers;
+
+
+Subquery in where 
+1.
+SELECT customer_name
+FROM Customers
+WHERE customer_id IN (
+    SELECT DISTINCT customer_id
+    FROM Orders
+    WHERE order_amount > 5000
+);
+
+2.
+SELECT customer_name
+FROM Customers
+WHERE EXISTS (
+    SELECT 1
+    FROM Orders
+    WHERE Orders.customer_id = Customers.customer_id
+    AND order_date >= CURDATE() - INTERVAL 30 DAY
+);
+
+Instead of join 
+SELECT 
+    customer_name, 
+    city,
+    (SELECT SUM(order_amount) 
+     FROM Orders o 
+     WHERE o.customer_id = c.customer_id) AS total_orders
+FROM Customers c;
+
+Use a Subquery in the FROM Clause
+
+SELECT 
+    id,
+    customer_name,
+    name_length,
+    uppercase_name,
+    lowercase_name,
+    contact_info,
+    name_prefix,
+    trimmed_city,
+    left_padded_name,
+    right_padded_name,
+    updated_name,
+    position_of_a,
+    first_5_chars,
+    last_5_chars,
+    reversed_name,
+    formatted_number
+FROM (
+    SELECT 
+        id,
+        customer_name,
+        LENGTH(customer_name) AS name_length,
+        UPPER(customer_name) AS uppercase_name,
+        LOWER(customer_name) AS lowercase_name,
+        CONCAT(city, ' - ', COALESCE(phone_number, '00000')) AS contact_info,
+        SUBSTRING(customer_name, 1, 5) AS name_prefix,
+        TRIM('   ExampleCity   ') AS trimmed_city,
+        LPAD(customer_name, 15, '*') AS left_padded_name,
+        RPAD(customer_name, 15, '-') AS right_padded_name,
+        REPLACE(customer_name, ' ', '_') AS updated_name,
+        INSTR(customer_name, 'a') AS position_of_a,
+        LEFT(customer_name, 5) AS first_5_chars,
+        RIGHT(customer_name, 5) AS last_5_chars,
+        REVERSE(customer_name) AS reversed_name,
+        FORMAT(9876543210, 2) AS formatted_number
+    FROM CustomerDetails
+) AS string_handling_results;
+
+
+
+Filtering Using CASE and Subquery
+SELECT 
+    customer_name, 
+    CASE 
+        WHEN (SELECT SUM(order_amount) FROM Orders WHERE Orders.customer_id = Customers.customer_id) > 
+             (SELECT AVG(order_amount) FROM Orders) THEN 'Above Average'
+        ELSE 'Below Average'
+    END AS order_category
+FROM Customers;
+
+
+Subquery for Ranking
+SELECT 
+    customer_name, 
+    (SELECT MAX(order_amount) 
+     FROM Orders 
+     WHERE order_amount < (SELECT MAX(order_amount) FROM Orders)) AS second_highest_order
+FROM Customers;
+
+
