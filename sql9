@@ -1,0 +1,84 @@
+Window Function Intro
+
+CREATE TABLE Sales (
+    TransactionID INT,
+    Store VARCHAR(50),
+    SalesAmount DECIMAL(10, 2)
+);
+
+INSERT INTO Sales (TransactionID, Store, SalesAmount)
+VALUES
+    (1, 'A', 100.00),
+    (2, 'A', 200.00),
+    (3, 'A', 150.00),
+    (4, 'B', 250.00),
+    (5, 'B', 300.00);
+
+
+select store , sum(SalesAmount) from sales 
+group by store ;
+
+
+SELECT TransactionID, Store, SalesAmount,
+       SUM(SalesAmount) OVER (PARTITION BY Store order by TransactionID desc ) AS TotalSales
+FROM Sales;
+
+
+ROW_NUMBER
+
+
+SELECT TransactionID, Store, SalesAmount,
+       ROW_NUMBER() OVER (partition by store ORDER BY TransactionID asc) AS RowNum
+FROM Sales;
+
+select TransactionID, Store, SalesAmount,
+ROW_NUMBER() OVER (partition by  STORE ORDER BY SalesAmount DESC ) AS ROWNUM 
+from sales;
+
+
+drop table if exists Employees;
+CREATE TABLE Employees (
+    EmployeeID INT,
+    Name VARCHAR(100),
+    Department VARCHAR(50),
+    HireDate DATE
+);
+
+
+INSERT INTO Employees (EmployeeID, Name, Department, HireDate)
+VALUES
+    (1, 'Alice', 'HR', '2020-05-01'),
+    (1, 'Alice', 'HR', '2022-06-15'),
+    (2, 'Bob', 'IT', '2021-07-10'),
+    (3, 'Charlie', 'Finance', '2020-09-30'),
+    (3, 'Charlie', 'Finance', '2022-05-22');
+
+select EmployeeID,Name,Department,HireDate , 
+ROW_NUMBER() over ( order by EmployeeID asc) as rownum 
+from employees 
+
+RANK
+
+drop table if exists students;
+CREATE TABLE Students (
+    StudentID INT,
+    StudentName VARCHAR(100),
+    ExamScore INT
+);
+
+INSERT INTO Students (StudentID, StudentName, ExamScore)
+VALUES
+    (1, 'Alice', 95),
+    (2, 'Bob', 90),
+    (3, 'Charlie', 95),
+    (4, 'David', 85),
+    (5, 'Eva', 90);
+
+select StudentID,StudentName,ExamScore,
+rank() over (order by ExamScore desc ) as score_rank from students
+
+select StudentID,StudentName,ExamScore,
+dense_rank() over (order by ExamScore desc ) as score_rank from students
+
+
+
