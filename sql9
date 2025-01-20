@@ -1,4 +1,4 @@
-Window Function Intro
+Window Function 
 
 CREATE TABLE Sales (
     TransactionID INT,
@@ -79,6 +79,107 @@ rank() over (order by ExamScore desc ) as score_rank from students
 
 select StudentID,StudentName,ExamScore,
 dense_rank() over (order by ExamScore desc ) as score_rank from students
+
+
+NTILE
+
+
+
+CREATE TABLE EmployeeSales (
+    EmployeeID INT,
+    EmployeeName VARCHAR(100),
+    SalesAmount DECIMAL(10, 2)
+);
+
+
+INSERT INTO EmployeeSales (EmployeeID, EmployeeName, SalesAmount) VALUES
+(1, 'Alice', 10000),
+(2, 'Bob', 8500),
+(3, 'Charlie', 7500),
+(4, 'David', 6000),
+(5, 'Eva', 11000),
+(6, 'Frank', 4500),
+(7, 'Grace', 3000),
+(8, 'Hank', 4000),
+(9, 'Ivy', 8000),
+(10, 'Jack', 9500);
+
+
+
+SELECT EmployeeID, EmployeeName, SalesAmount,
+       NTILE(4) OVER (ORDER BY SalesAmount DESC) AS PerformanceGroup
+FROM EmployeeSales;
+
+
+PERCENT_RANK
+
+
+CREATE TABLE ProductSales (
+    ProductID INT,
+    ProductName VARCHAR(100),
+    SalesAmount INT
+);
+
+
+INSERT INTO ProductSales (ProductID, ProductName, SalesAmount) VALUES
+(1, 'Product 1', 500),
+(2, 'Product 2', 600),
+(3, 'Product 3', 550),
+(4, 'Product 4', 700),
+(5, 'Product 5', 750),
+(6, 'Product 6', 800),
+(7, 'Product 7', 850),
+(8, 'Product 8', 900),
+(9, 'Product 9', 950),
+(10, 'Product 10', 1000),
+(11, 'Product 11', 600),
+(12, 'Product 12', 650),
+(13, 'Product 13', 700),
+(14, 'Product 14', 750),
+(15, 'Product 15', 800),
+(16, 'Product 16', 850),
+(17, 'Product 17', 900),
+(18, 'Product 18', 950),
+(19, 'Product 19', 1000),
+(20, 'Product 20', 100),
+(21, 'Product 21', 200),
+(22, 'Product 22', 250),
+(23, 'Product 23', 300),
+(24, 'Product 24', 350),
+(25, 'Product 25', 400),
+(26, 'Product 26', 450),
+(27, 'Product 27', 500),
+(28, 'Product 28', 550),
+(29, 'Product 29', 600),
+(30, 'Product 30', 650),
+(31, 'Product 31', 700),
+(32, 'Product 32', 750),
+(33, 'Product 33', 800),
+(34, 'Product 34', 850),
+(35, 'Product 35', 900),
+(36, 'Product 36', 950),
+(37, 'Product 37', 1000),
+(38, 'Product 38', 550),
+(39, 'Product 39', 600),
+(40, 'Product 40', 650),
+(41, 'Product 41', 700),
+(42, 'Product 42', 750),
+(43, 'Product 43', 800),
+(44, 'Product 44', 850),
+(45, 'Product 45', 900),
+(46, 'Product 46', 950),
+(47, 'Product 47', 1000),
+(48, 'Product 48', 550),
+(49, 'Product 49', 600),
+(50, 'Product 50', 650);
+
+
+SELECT ProductID, ProductName, SalesAmount,
+       PERCENT_RANK() OVER (ORDER BY SalesAmount DESC) AS PercentRank,
+       RANK() OVER (ORDER BY SalesAmount DESC) AS Rank_s
+
+FROM ProductSales;
+
 
 
 
