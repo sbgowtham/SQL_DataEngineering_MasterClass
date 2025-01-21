@@ -1,5 +1,5 @@
 Window Function 
-
+----------------
 CREATE TABLE Sales (
     TransactionID INT,
     Store VARCHAR(50),
@@ -25,7 +25,7 @@ FROM Sales;
 
 
 ROW_NUMBER
-
+----------------
 
 SELECT TransactionID, Store, SalesAmount,
        ROW_NUMBER() OVER (partition by store ORDER BY TransactionID asc) AS RowNum
@@ -57,8 +57,8 @@ select EmployeeID,Name,Department,HireDate ,
 ROW_NUMBER() over ( order by EmployeeID asc) as rownum 
 from employees 
 
-RANK
-
+RANK and DENSE RANK
+--------------------
 drop table if exists students;
 CREATE TABLE Students (
     StudentID INT,
@@ -82,7 +82,7 @@ dense_rank() over (order by ExamScore desc ) as score_rank from students
 
 
 NTILE
-
+----------------
 
 
 CREATE TABLE EmployeeSales (
@@ -112,7 +112,7 @@ FROM EmployeeSales;
 
 
 PERCENT_RANK
-
+----------------
 
 CREATE TABLE ProductSales (
     ProductID INT,
@@ -181,5 +181,104 @@ SELECT ProductID, ProductName, SalesAmount,
 FROM ProductSales;
 
 
+
+
+LAG
+----------------
+drop table if exists EmployeeSalaries;
+CREATE TABLE EmployeeSalaries (
+    EmployeeID INT,
+    EmployeeName VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    Year INT
+);
+INSERT INTO EmployeeSalaries (EmployeeID, EmployeeName, Salary, Year) VALUES
+(1, 'Alice', 5000, 2023),
+(1, 'Alice', 5500, 2024),
+(2, 'Bob', 4500, 2023),
+(2, 'Bob', 4800, 2024),
+(3, 'Charlie', 4000, 2023),
+(3, 'Charlie', 4200, 2024),
+(4, 'David', 4600, 2023),
+(4, 'David', 4700, 2024),
+(5, 'Eva', 5200, 2023),
+(5, 'Eva', 5400, 2024);
+
+
+select * ,
+lag(Salary) over (partition by EmployeeID order by year) as PreviousYearSalary
+from EmployeeSalaries;
+
+select * ,
+lag(Salary) over (partition by EmployeeID order by year) as PreviousYearSalary,
+salary - lag(Salary) over (partition by EmployeeID order by year) as SalaryChange
+from EmployeeSalaries;
+
+LEAD
+----------------
+CREATE TABLE SalesData (
+    SaleID INT,
+    EmployeeName VARCHAR(100),
+    SaleAmount DECIMAL(10, 2),
+    SaleDate DATE
+);
+INSERT INTO SalesData (SaleID, EmployeeName, SaleAmount, SaleDate) VALUES
+(1, 'Alice', 5000, '2025-01-01'),
+(2, 'Bob', 3000, '2025-01-02'),
+(3, 'Charlie', 4000, '2025-01-03'),
+(4, 'David', 4500, '2025-01-04'),
+(5, 'Eva', 5500, '2025-01-05');
+
+SELECT SaleID, EmployeeName, SaleDate, SaleAmount,
+       LEAD(SaleAmount) OVER (ORDER BY SaleDate) AS NextSaleAmount
+FROM SalesData;
+
+
+FIRST_VALUE
+----------------
+drop table if exists EmployeeSalaries;
+CREATE TABLE EmployeeSalaries (
+    EmployeeID INT,
+    EmployeeName VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    Year INT
+);
+INSERT INTO EmployeeSalaries (EmployeeID, EmployeeName, Salary, Year) VALUES
+(1, 'Alice', 5000, 2021),
+(1, 'Alice', 5500, 2022),
+(1, 'Alice', 6000, 2023),
+(1, 'Alice', 6500, 2024),
+(1, 'Alice', 7000, 2025),
+(2, 'Bob', 4500, 2023),
+(2, 'Bob', 4800, 2024),
+(3, 'Charlie', 4000, 2023),
+(3, 'Charlie', 4200, 2024),
+(4, 'David', 4600, 2023),
+(4, 'David', 4700, 2024),
+(5, 'Eva', 5200, 2023),
+(5, 'Eva', 5400, 2024);
+
+select *,
+first_value (Salary) over (partition by EmployeeID order by Year 
+                         ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as firstsalary,
+ first_value (Salary) over (partition by EmployeeID order by Year 
+                         )- salary as diff
+from EmployeeSalaries;
+
+LAST_VALUE 
+----------------
+select *,
+last_value (Salary) over (partition by EmployeeID order by Year 
+                         ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as lastsalary,
+ last_value (Salary) over (partition by EmployeeID order by Year 
+                         ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)- salary as diff
+from EmployeeSalaries;
+
+
+NTH_VALUE 
+----------------
+SELECT EmployeeID, EmployeeName, Salary,
+       NTH_VALUE(Salary, 2) OVER (PARTITION BY EmployeeID ORDER BY year) AS ThirdSalary
+FROM EmployeeSalaries;
 
 
