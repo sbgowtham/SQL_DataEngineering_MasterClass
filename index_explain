@@ -1,0 +1,39 @@
+
+DROP TABLE IF EXISTS customers;
+
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name  VARCHAR(50) NOT NULL,
+    last_name   VARCHAR(50) NOT NULL,
+    email       VARCHAR(100) NOT NULL,
+    city        VARCHAR(100) NOT NULL
+);
+
+CREATE INDEX idx_email ON customers (email);
+
+
+INSERT INTO customers (first_name, last_name, email, city)
+VALUES
+('John', 'Doe', 'john@example.com', 'New York'),
+('Jane', 'Smith', 'jane.smith@example.com', 'Los Angeles'),
+('Michael', 'Brown', 'michael.brown@example.com', 'Chicago'),
+('Emily', 'Johnson', 'emily.johnson@example.com', 'Houston'),
+('Robert', 'Green', 'robert.green@example.com', 'Phoenix');
+
+
+select * from customers where email='john@example.com' ;
+
+EXPLAIN
+-------
+EXPLAIN
+SELECT *
+FROM customers1
+WHERE email = 'john@example.com';
+
+EXPLAIN ANALYZE
+---------------
+EXPLAIN ANALYZE
+SELECT *
+FROM customers
+WHERE email = 'john@example.com';
+
