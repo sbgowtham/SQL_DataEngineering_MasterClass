@@ -1,0 +1,45 @@
+Union and Unionall
+
+%%sql
+
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS contractors;
+
+use test;
+
+CREATE TABLE employees (
+    employee_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name  VARCHAR(50),
+    last_name   VARCHAR(50),
+    position    VARCHAR(50),
+    salary      DECIMAL(10,2)
+);
+
+CREATE TABLE contractors (
+    contractor_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name    VARCHAR(50),
+    last_name     VARCHAR(50),
+    position      VARCHAR(50),
+    hourly_rate   DECIMAL(10,2)
+);
+
+%%sql
+INSERT INTO employees (first_name, last_name, position, salary)
+VALUES
+('Alice', 'Smith', 'Developer', 70000.00),
+('Bob', 'Johnson', 'Developer', 75000.00),
+('Charlie', 'Lee', 'Manager', 90000.00);
+
+INSERT INTO contractors (first_name, last_name, position, hourly_rate)
+VALUES
+('Dave', 'Williams', 'Developer', 40.00),
+('Eve', 'Brown', 'Tester', 35.00),
+('Bob', 'Johnson', 'Developer', 45.00);
+
+select  employee_id,first_name from employees
+union 
+select contractor_id	,first_name from contractors
+
+select  employee_id,first_name from employees
+union all
+select contractor_id	,first_name from contractors
