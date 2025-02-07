@@ -1,0 +1,56 @@
+-- 1. Create and use a new database for testing
+CREATE DATABASE IF NOT EXISTS datetime_vs_timestamp;
+USE datetime_vs_timestamp;
+
+-- 2. Create a table with both DATETIME and TIMESTAMP columns
+DROP TABLE IF EXISTS demo_events;
+CREATE TABLE demo_events (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(100),
+    event_date DATETIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Insert some sample data
+INSERT INTO demo_events (event_name, event_date)
+VALUES
+    ('New Year Celebration', '2025-01-01 00:00:00'),
+    ('Summer Fest', '2025-06-15 12:30:00');
+
+-- 4. Observe values in default session time zone
+SELECT 
+    event_id,
+    event_name,
+    event_date, 
+    created_at 
+FROM demo_events;
+
+-- 5. Change to a different time zone (e.g., Pacific Time)
+SET time_zone = 'America/Los_Angeles';
+
+-- 6. Observe any difference in displayed times
+SELECT 
+    event_id,
+    event_name,
+    event_date, 
+    created_at 
+FROM demo_events;
+
+-- 7. (Optional) Demonstrate ON UPDATE CURRENT_TIMESTAMP
+ALTER TABLE demo_events 
+    MODIFY COLUMN created_at TIMESTAMP 
+        DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP;
+
+-- Update a row to see created_at change
+UPDATE demo_events 
+SET event_name = 'Summer Fest - Updated' 
+WHERE event_id = 2;
+
+-- Check the result
+SELECT 
+    event_id,
+    event_name,
+    event_date, 
+    created_at 
+FROM demo_events;
