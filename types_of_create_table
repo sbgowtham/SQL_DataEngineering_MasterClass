@@ -1,0 +1,49 @@
+-- 1) Basic create
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    first_name  VARCHAR(50) NOT NULL,
+    last_name   VARCHAR(50) NOT NULL,
+    hire_date   DATE        NOT NULL,
+    salary      DECIMAL(10,2)
+);
+
+-- 2) Create with constraints (foreign key)
+CREATE TABLE departments (
+    dept_id   INT PRIMARY KEY,
+    dept_name VARCHAR(100) NOT NULL UNIQUE,
+    location  VARCHAR(100) NOT NULL
+);
+
+-- 3) Create table as select
+CREATE TABLE high_paid_employees AS
+SELECT 
+    employee_id, 
+    first_name, 
+    last_name, 
+    salary
+FROM employees
+WHERE salary > 60000;
+
+-- 4) Temporary table
+CREATE TEMPORARY TABLE temp_high_paid_employees (
+    employee_id INT,
+    salary      DECIMAL(10,2)
+);
+
+INSERT INTO temp_high_paid_employees
+SELECT 
+    employee_id, 
+    salary
+FROM employees
+WHERE salary > 60000;
+
+SELECT * FROM temp_high_paid_employees; -- available only in this session
+
+-- 5) Using CTE (MySQL 8.0.19+)
+WITH high_salary_cte AS (
+    SELECT employee_id, first_name, last_name, salary
+    FROM employees
+    WHERE salary > 70000
+)
+CREATE TABLE high_salary_employees_via_cte
+SELECT * FROM high_salary_cte;
