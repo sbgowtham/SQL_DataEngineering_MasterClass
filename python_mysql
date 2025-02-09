@@ -1,0 +1,35 @@
+Step 1
+
+pip install JayDeBeApi
+
+
+Step 2 
+Code
+
+
+import jaydebeapi
+
+# Path to the MySQL JDBC driver jar file
+jdbc_driver_path = '/path/to/mysql-connector-java-X.X.XX.jar'
+
+# JDBC connection details
+jdbc_url = 'jdbc:mysql://localhost:3306/your_database'
+driver_class = 'com.mysql.cj.jdbc.Driver'
+username = 'your_username'
+password = 'your_password'
+
+# Connect using JayDeBeApi
+conn = jaydebeapi.connect(driver_class,
+                          jdbc_url,
+                          [username, password],
+                          jdbc_driver_path)
+
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM your_table")
+rows = cursor.fetchall()
+
+for row in rows:
+    print(row)
+
+cursor.close()
+conn.close()
