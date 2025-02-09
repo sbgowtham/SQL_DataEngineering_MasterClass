@@ -1,0 +1,28 @@
+A view in SQL is essentially a virtual table that is defined by a SQL query. Unlike a regular table, a view does not store data physically. 
+  Instead, it dynamically retrieves data from one or more underlying tables (or even other views) whenever you query it.
+
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName  VARCHAR(50),
+    LastName   VARCHAR(50),
+    Salary     DECIMAL(10,2),
+    Department VARCHAR(50)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, Department)
+VALUES
+    (1, 'Alice', 'Johnson', 55000.00, 'Sales'),
+    (2, 'Bob',   'Smith',   60000.00, 'IT'),
+    (3, 'Carol', 'Davis',   52000.00, 'Sales'),
+    (4, 'Dave',  'Wilson',  58000.00, 'HR');
+
+-- Create a view that shows only employees in the Sales department
+CREATE VIEW SalesEmployees AS
+SELECT EmployeeID, FirstName, LastName, Salary
+FROM Employees
+WHERE Department = 'Sales';
+
+-- Now, you can query the view like a table:
+SELECT * FROM SalesEmployees;
