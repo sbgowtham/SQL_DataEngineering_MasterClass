@@ -1,5 +1,6 @@
-Normalization in SQL is a systematic process of organizing the columns (attributes) and tables (relations) of a relational database to minimize data redundancy and improve data integrity. 
-In simpler terms, normalization helps ensure that each piece of data is stored in the best possible place, reducing duplication and making it easier to maintain and update the database.
+Normalization in SQL is a systematic process of organizing the columns (attributes) and tables (relations) of a relational database to minimize data redundancy 
+and improve data integrity. In simpler terms, normalization helps ensure that each piece of data is stored in the best possible place, 
+reducing duplication and making it easier to maintain and update the database.
 
 Why Normalize?
 Reduce Data Redundancy: Storing the same data multiple times can waste space and cause inconsistencies if that data needs to change.
