@@ -1,0 +1,201 @@
+In SQL, "regex" stands for "regular expression," which is a sequence of characters used to define a search pattern, allowing you to find and manipulate text data within your database by 
+matching complex patterns within strings, rather than just exact matches; essentially providing a powerful tool for searching, extracting, and validating data based on specific character patterns 
+within your SQL queries. 
+
+Eample 
+
+DROP TABLE IF EXISTS regex_samples;
+
+CREATE TABLE regex_samples (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sample_text VARCHAR(100)
+);
+
+
+INSERT INTO regex_samples (sample_text) VALUES 
+('apple'),         -- id=1
+('Banana'),        -- id=2 (note the capital B)
+('cherry'),        -- id=3
+('date'),          -- id=4
+('elderberry'),    -- id=5
+('fig'),           -- id=6
+('grape'),         -- id=7
+('honeydew'),      -- id=8
+('running'),       -- id=9 (ends with "ing")
+('123abc');        -- id=10 (starts with digits)
+
+
+Example 1: Match Strings That Start with “a”
+
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '^a';
+
+
+Example 2: Match Strings That End with “e”
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP 'e$';
+
+
+Example 3: Match Strings That Start with a Digit
+
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '^[0-9]';
+
+
+Example 4: Match Strings Ending with “ing”
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP 'ing$';
+
+Example 5: Match Strings with Consecutive Repeated Characters
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '(.)\\1';
+
+
+Example 6: Match Strings That Contain Only Letters
+
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '^[A-Za-z]+$';
+
+
+Example 7: Match Strings with Exactly 5 Characters
+
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '^.{5}$';
+
+
+Example 8: Match Strings Containing an Uppercase Letter (Case‑Sensitive) -- this may not work in some versions
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP BINARY '[A-Z]';
+
+
+Example 9: Match Only “apple” or “banana” Exactly
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '^(apple|banana)$';
+
+
+Example 10: Match Strings Starting with 3 Digits Followed by Letters
+
+SELECT * 
+FROM regex_samples
+WHERE sample_text REGEXP '^[0-9]{3}[A-Za-z]+$';
+
+
+
+CREATE TABLE demo_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(50),
+    phone VARCHAR(25),
+    email VARCHAR(100),
+    date_col VARCHAR(10),   -- Storing as VARCHAR for the demo
+    status VARCHAR(20),
+    sku VARCHAR(20),
+    username VARCHAR(30),
+    notes VARCHAR(100)
+);
+
+
+INSERT INTO demo_data (full_name, phone, email, date_col, status, sku, username, notes)
+VALUES
+-- 1
+('John Smith', 
+ '123-456-7890', 
+ 'john@example.com', 
+ '2025-02-07', 
+ 'pending', 
+ 'ABCD', 
+ 'johnsmith', 
+ 'Ships to CA'),
+
+-- 2
+('Alice Johnson', 
+ '(987) 654-3210', 
+ 'alice@@example.net', 
+ '2025-02-07', 
+ 'inactive', 
+ 'SKU-123', 
+ 'alice', 
+ 'NY location'),
+
+-- 3
+('Bob Williams', 
+ '+1-555-123-4567', 
+ 'bob@sample.org', 
+ '20250207', 
+ 'complete', 
+ '1SKU', 
+ 'bob123', 
+ 'Shipping to CA'),
+
+-- 4
+('Mary 1 White', 
+ '(123) 123-4567', 
+ 'mary123@example.com', 
+ '2025-13-31', 
+ 'PENDING', 
+ 'abc-999', 
+ 'mary_white', 
+ 'Something about CA or'),
+
+-- 5
+('Mark-Spencer', 
+ '1234567890', 
+ 'mark@example.com', 
+ '2024-11-02', 
+ 'active', 
+ 'SKU-9999', 
+ 'mark', 
+ 'Random note'),
+
+-- 6
+('Jane O''Connor',   -- Note the doubled apostrophe for SQL
+ '987-654-3210', 
+ 'jane.o.connor@example.org', 
+ '2024-12-31', 
+ 'inactive', 
+ 'ABCDE', 
+ 'janeO', 
+ 'Contains CA or NY'),
+
+-- 7
+('Invalid Mail', 
+ '000-000-0000', 
+ 'invalid@@example..com', 
+ '2023-01-15', 
+ 'inactive', 
+ 'XYZ000', 
+ 'invalid', 
+ 'Double @ and dots'),
+
+-- 8
+('NoSpacesHere', 
+ '+12-345-678-9012',
+ 'nospaces@example.co',
+ '2025-02-07',
+ 'pending',
+ 'SKU999',
+ 'NoSpaces',
+ 'Ends with .co domain');
+
+
+1. Matching a Strict Date Format (YYYY-MM-DD)
+
+SELECT *
+FROM demo_data
+WHERE date_col REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$';
+
+
+2. Matching Names Containing Only Letters and Spaces
+SELECT *
+FROM demo_data
+WHERE full_name REGEXP '^[A-Za-z ]+$';
+
+
