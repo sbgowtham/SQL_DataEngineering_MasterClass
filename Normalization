@@ -116,3 +116,50 @@ VALUES (1, 101),
        (2, 101),
        (1, 102);
 
+
+3. Third Normal Form (3NF)
+Definition & Purpose (3NF)
+3NF requires that the table is in 2NF and that all the columns are directly dependent on the primary key 
+(i.e., no transitive dependencies).
+Purpose: To remove transitive dependencies where a non-key column depends on another non-key column.
+
+Before
+
+-- This table is in 2NF but has a transitive dependency:
+CREATE TABLE Courses_Non3NF (
+    course_id        INT PRIMARY KEY,
+    course_name      VARCHAR(100),
+    instructor       VARCHAR(100),
+    instructor_office VARCHAR(100)
+);
+
+-- Sample data insertion
+INSERT INTO Courses_Non3NF (course_id, course_name, instructor, instructor_office)
+VALUES (101, 'Intro to SQL', 'Dr. Smith', 'Room 101'),
+       (102, 'Database Design', 'Dr. Jones', 'Room 102');
+
+After 
+
+-- Revised Courses table (now 3NF): holds course-specific data
+CREATE TABLE Courses (
+    course_id   INT PRIMARY KEY,
+    course_name VARCHAR(100),
+    instructor  VARCHAR(100),
+    FOREIGN KEY (instructor) REFERENCES Instructors(instructor)
+);
+
+-- New table for instructor details
+CREATE TABLE Instructors (
+    instructor       VARCHAR(100) PRIMARY KEY,
+    instructor_office VARCHAR(100)
+);
+
+-- Insert instructor details
+INSERT INTO Instructors (instructor, instructor_office)
+VALUES ('Dr. Smith', 'Room 101'),
+       ('Dr. Jones', 'Room 102');
+
+-- Insert courses with reference to instructors
+INSERT INTO Courses (course_id, course_name, instructor)
+VALUES (101, 'Intro to SQL', 'Dr. Smith'),
+       (102, 'Database Design', 'Dr. Jones');
