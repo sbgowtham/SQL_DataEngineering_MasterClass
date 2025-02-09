@@ -1,35 +1,49 @@
 Step 1
 
-pip install JayDeBeApi
+pip install mysql-connector-python
+
 
 
 Step 2 
 Code
 
+import mysql.connector
+from mysql.connector import Error
 
-import jaydebeapi
+try:
+    # Establish the connection
+    connection = mysql.connector.connect(
+        host='localhost',            # e.g., 'localhost' or the IP address of your MySQL server
+        database='your_database',    # the name of the database you created
+        user='your_username',        # your MySQL username
+        password='your_password'     # your MySQL password
+    )
 
-# Path to the MySQL JDBC driver jar file
-jdbc_driver_path = '/path/to/mysql-connector-java-X.X.XX.jar'
+    if connection.is_connected():
+        print("Connected to MySQL database")
 
-# JDBC connection details
-jdbc_url = 'jdbc:mysql://localhost:3306/your_database'
-driver_class = 'com.mysql.cj.jdbc.Driver'
-username = 'your_username'
-password = 'your_password'
+        # Create a cursor object using the connection
+        cursor = connection.cursor()
 
-# Connect using JayDeBeApi
-conn = jaydebeapi.connect(driver_class,
-                          jdbc_url,
-                          [username, password],
-                          jdbc_driver_path)
+        # Define your query (for example, selecting all rows from a table)
+        query = "SELECT * FROM your_table"
 
-cursor = conn.cursor()
-cursor.execute("SELECT * FROM your_table")
-rows = cursor.fetchall()
+        # Execute the query
+        cursor.execute(query)
 
-for row in rows:
-    print(row)
+        # Fetch all rows from the executed query
+        rows = cursor.fetchall()
 
-cursor.close()
-conn.close()
+        # Process the rows
+        for row in rows:
+            print(row)
+
+except Error as e:
+    print("Error while connecting to MySQL", e)
+
+finally:
+    # Close the cursor and connection
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+        print("MySQL connection is closed")
