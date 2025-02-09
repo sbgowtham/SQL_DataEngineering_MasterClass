@@ -1,8 +1,10 @@
-Let's consider an Uber use case where we have a table rides that contains information about each ride, such as ride_id, driver_id, rider_id, pickup_location, dropoff_location, ride_date, and fare.
+Let's consider an Uber use case where we have a table rides that contains information about each ride, such as ride_id, driver_id, rider_id, 
+pickup_location, dropoff_location, ride_date, and fare.
 
 
 Query: Using WHERE to Filter Data
-The WHERE clause is used to filter records based on a condition. For example, if you want to find all the rides where the fare is greater than 500
+The WHERE clause is used to filter records based on a condition. For example, if you want to find all the rides where the fare is greater 
+than 500
 
 Code 
 
