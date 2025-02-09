@@ -14,7 +14,8 @@ First Normal Form (1NF)
 Second Normal Form (2NF)
 Third Normal Form (3NF)
 
-(There are higher normal forms like 4NF and 5NF, but they are more specialized and not always required for most practical applications. Typically, going up to 3NF or BCNF is sufficient.)
+(There are higher normal forms like 4NF and 5NF, but they are more specialized and not always required for most practical applications. 
+Typically, going up to 3NF or BCNF is sufficient.)
 
 
 1. First Normal Form (1NF)
