@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Regex Cheat Sheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #eef;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Regex Cheat Sheet</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Pattern</th>
+        <th>Description</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>^</code></td>
+        <td>Start of string anchor – Asserts that the following pattern must occur at the beginning of the string.</td>
+        <td><code>^Hello</code> matches "Hello world" only if "Hello" is at the start.</td>
+      </tr>
+      <tr>
+        <td><code>$</code></td>
+        <td>End of string anchor – Asserts that the preceding pattern must occur at the end of the string.</td>
+        <td><code>world$</code> matches "Hello world" only if "world" is at the end.</td>
+      </tr>
+      <tr>
+        <td><code>.</code></td>
+        <td>Any character – Matches any single character except a newline.</td>
+        <td><code>a.c</code> matches "abc", "a-c", or "a c".</td>
+      </tr>
+      <tr>
+        <td><code>*</code></td>
+        <td>Zero or more – Matches zero or more occurrences of the preceding element.</td>
+        <td><code>ab*c</code> matches "ac", "abc", "abbc", etc.</td>
+      </tr>
+      <tr>
+        <td><code>+</code></td>
+        <td>One or more – Matches one or more occurrences of the preceding element.</td>
+        <td><code>ab+c</code> matches "abc", "abbc", but not "ac".</td>
+      </tr>
+      <tr>
+        <td><code>?</code></td>
+        <td>Zero or one – Matches zero or one occurrence of the preceding element. Also makes quantifiers non-greedy when placed after them.</td>
+        <td><code>colou?r</code> matches both "color" and "colour".</td>
+      </tr>
+      <tr>
+        <td><code>{n}</code></td>
+        <td>Exact count – Matches exactly <em>n</em> occurrences of the preceding element.</td>
+        <td><code>a{3}</code> matches "aaa".</td>
+      </tr>
+      <tr>
+        <td><code>{n,}</code></td>
+        <td>At least n occurrences – Matches <em>n</em> or more occurrences of the preceding element.</td>
+        <td><code>a{2,}</code> matches "aa", "aaa", "aaaa", etc.</td>
+      </tr>
+      <tr>
+        <td><code>{n,m}</code></td>
+        <td>Range of occurrences – Matches between <em>n</em> and <em>m</em> occurrences (inclusive) of the preceding element.</td>
+        <td><code>a{2,4}</code> matches "aa", "aaa", or "aaaa".</td>
+      </tr>
+      <tr>
+        <td><code>[abc]</code></td>
+        <td>Character class – Matches any one of the characters enclosed in the brackets.</td>
+        <td><code>[abc]</code> matches "a", "b", or "c".</td>
+      </tr>
+      <tr>
+        <td><code>[^abc]</code></td>
+        <td>Negated character class – Matches any character <em>not</em> listed between the brackets.</td>
+        <td><code>[^abc]</code> matches any character except "a", "b", or "c".</td>
+      </tr>
+      <tr>
+        <td><code>(abc)</code></td>
+        <td>Grouping and capturing – Groups the characters "abc" together, which can then be referenced later.</td>
+        <td><code>(abc)+</code> matches "abc", "abcabc", etc.</td>
+      </tr>
+      <tr>
+        <td><code>|</code></td>
+        <td>Alternation (OR) – Matches the expression before or after the <code>|</code> symbol.</td>
+        <td><code>cat|dog</code> matches "cat" or "dog".</td>
+      </tr>
+      <tr>
+        <td><code>\d</code></td>
+        <td>Digit character – Matches any single digit (equivalent to <code>[0-9]</code>).</td>
+        <td><code>\d</code> matches "0", "1", …, "9".</td>
+      </tr>
+      <tr>
+        <td><code>\D</code></td>
+        <td>Non-digit character – Matches any character that is not a digit.</td>
+        <td><code>\D</code> matches letters or symbols that are not digits.</td>
+      </tr>
+      <tr>
+        <td><code>\w</code></td>
+        <td>Word character – Matches any alphanumeric character or underscore (equivalent to <code>[A-Za-z0-9_]</code>).</td>
+        <td><code>\w</code> matches letters, digits, and underscores.</td>
+      </tr>
+      <tr>
+        <td><code>\W</code></td>
+        <td>Non-word character – Matches any character that is not a word character.</td>
+        <td><code>\W</code> matches punctuation, spaces, etc.</td>
+      </tr>
+      <tr>
+        <td><code>\s</code></td>
+        <td>Whitespace character – Matches spaces, tabs, newlines, and other whitespace.</td>
+        <td><code>\s</code> matches a single space or tab.</td>
+      </tr>
+      <tr>
+        <td><code>\S</code></td>
+        <td>Non-whitespace character – Matches any character that is not whitespace.</td>
+        <td><code>\S</code> matches letters, digits, punctuation, etc.</td>
+      </tr>
+      <tr>
+        <td><code>\b</code></td>
+        <td>Word boundary – Asserts a position between a word character and a non-word character (or the beginning/end of the string).</td>
+        <td><code>\bword\b</code> matches "word" as a whole word (not part of "sword" or "words").</td>
+      </tr>
+      <tr>
+        <td><code>\B</code></td>
+        <td>Non-word boundary – Asserts a position that is not a word boundary.</td>
+        <td><code>\Bend</code> might match "bend" within a longer word like "amendment".</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>How to Use This Cheat Sheet</h2>
+  <ul>
+    <li><strong>Copy &amp; Paste:</strong> Copy the above HTML into your editor.</li>
+    <li><strong>Save as HTML:</strong> Save the file as <code>regex_cheat_sheet.html</code>.</li>
+    <li><strong>Open in Browser:</strong> Open the HTML file in any web browser to view the cheat sheet.</li>
+    <li><strong>Print or Export:</strong> You can also print or export the page to PDF from your browser.</li>
+  </ul>
+</body>
+</html>
