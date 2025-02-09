@@ -53,5 +53,15 @@ CREATE TABLE StudentPhones (
     FOREIGN KEY (student_id) REFERENCES Students(student_id)
 );
 
+-- Insert students
+INSERT INTO Students (student_id, student_name)
+VALUES (1, 'Alice'),
+       (2, 'Bob');
+
+-- Insert phone numbers (each phone number in its own row)
+INSERT INTO StudentPhones (student_id, phone)
+VALUES (1, '123-4567'),
+       (1, '987-6543'),
+       (2, '555-1212');
 
 
