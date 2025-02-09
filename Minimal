@@ -1,0 +1,12 @@
+In this context, minimal means that the set of columns (attributes) chosen to uniquely identify a row contains no unnecessary parts—if you remove any column from that set, 
+it would no longer uniquely identify the row.
+
+Breaking It Down with an Example
+Imagine a table with columns A, B, and C where:
+
+The combination (A, B, C) uniquely identifies each row.
+However, if it turns out that (A, B) alone is enough to uniquely identify each row, then (A, B, C) is not minimal because C is extra.
+Thus, the minimal key here is (A, B) since you cannot remove A or B without losing the ability to uniquely identify the row. This minimal set is what we call a candidate key.
+
+One-Line Definition Recap
+Minimal (in this context): A set of columns that is just sufficient to uniquely identify a row—removing any column would break this uniqueness.
