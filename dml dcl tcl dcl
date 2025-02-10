@@ -1,0 +1,47 @@
+DDL (Data Definition Language):
+
+Purpose: Define or modify the structure of the database (e.g., schemas, tables, indexes).
+
+CREATE (to create databases, tables, indexes, etc.)
+ALTER (to modify an existing database object)
+DROP (to delete objects)
+TRUNCATE (to remove all records from a table)
+RENAME (to rename an object)
+
+
+==================================
+
+
+DML (Data Manipulation Language):
+
+Purpose: Manipulate the data stored in the database.
+
+
+SELECT (to query data)
+
+INSERT (to add new records)
+
+UPDATE (to modify existing records)
+
+DELETE (to remove records)
+
+========================================
+
+DCL (Data Control Language):
+
+Purpose: Control access to data and database objects.
+
+GRANT (to give user access privileges)
+REVOKE (to take away privileges)
+
+
+============================================
+
+TCL (Transaction Control Language):
+
+Purpose: Manage transactions within the database.
+
+
+COMMIT (to save transactions permanently)
+ROLLBACK (to undo transactions)
+SAVEPOINT (to set a point within a transaction to which you can roll back)
