@@ -1,0 +1,45 @@
+ACID 
+
+1. Atomicity
+
+Atomicity means that a transaction is treated as a single, indivisible unit.
+Either all the operations in the transaction are completed successfully, or none of them are. There's no in-between state.
+1. savings 199 debit   2. credit to netflix 199 
+pass 					fail
+
+199 return 
+
+
+2.Consistency 
+Consistency ensures that a transaction brings the database from one valid state to another, following all the defined rules (like constraints, triggers, etc.).
+
+Before the transaction:
+
+trade account : $500
+murtual funds: $300
+Total: $800
+Transaction: Transfer $100 from trade account to murtual funds .
+
+After the transaction:
+
+trade account : $400
+murtual funds: $400
+Total: $800
+
+
+trade account : $500
+murtual funds: $400
+Total: $900
+
+
+3. Isolation
+Isolation means that transactions running concurrently do not interfere with each other. Each transaction should be executed as if it is the only one in the system.
+
+Person A is transferring $100.
+Person B is transferring $200.
+
+4. Durability 
+
+Durability guarantees that once a transaction has been committed, it will remain so, even in the event of a system failure like a power outage or crash.
+
+Even if the database crashes immediately after, when it comes back online, the transfer is still reflected in your account balances.
