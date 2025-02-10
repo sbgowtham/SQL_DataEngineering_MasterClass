@@ -1,0 +1,15 @@
+To create user login to root user and then login to jane_doe user  << refer the video >>
+
+
+CREATE USER 'jane_doe'@'localhost' IDENTIFIED BY 'StrongP@ssw0rd';
+
+GRANT SELECT, INSERT ON test.* TO 'jane_doe'@'localhost';
+
+FLUSH PRIVILEGES;
+
+update accounts set customer_name ='gowtham' where order_id=101;  # use any table that you have , you should get access error here 
+
+SELECT User, Host FROM mysql.user;
+
+REVOKE SELECT, INSERT ON test.* FROM 'jane_doe'@'localhost';
+FLUSH PRIVILEGES;
