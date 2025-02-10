@@ -1,0 +1,22 @@
+drop table if exists Employees;
+CREATE TABLE Employees (
+  EmployeeID INT PRIMARY KEY,
+  FirstName VARCHAR(50),
+  LastName VARCHAR(50)
+);
+
+
+desc Employees;
+
+ALTER TABLE Employees ADD Email VARCHAR(100);
+
+desc Employees;
+
+alter table Employees drop column LastName;
+
+desc Employees;
+
+
+alter table Employees rename to emp_123;
+
+desc emp_123;
