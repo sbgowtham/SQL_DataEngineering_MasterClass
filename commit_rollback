@@ -1,0 +1,30 @@
+CREATE TABLE Accounts (
+  AccountID INT PRIMARY KEY,
+  AccountHolder VARCHAR(100),
+  Balance DECIMAL(10,2)
+);
+
+-- Insert a new record into Accounts
+INSERT INTO Accounts (AccountID, AccountHolder, Balance)
+VALUES (1, 'Alice', 5000.00);
+
+START TRANSACTION;
+
+-- Perform one or more SQL statements
+UPDATE Accounts SET Balance = Balance - 1000 WHERE AccountID = 1;
+
+select * from accounts;
+
+-- If all statements execute successfully, commit the transaction
+COMMIT;
+
+-- or 
+
+UPDATE Accounts SET Balance = Balance - 1000 WHERE AccountID = 1;
+
+select * from accounts;
+
+rollback; 
+
+select * from accounts;
+
