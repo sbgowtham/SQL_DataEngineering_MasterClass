@@ -111,17 +111,18 @@ Sub Partition
 -------------
 
 CREATE TABLE orders (
-    order_id      INT AUTO_INCREMENT PRIMARY KEY,
+    order_id      INT AUTO_INCREMENT,
     order_date    DATE NOT NULL,
     customer_name VARCHAR(50),
-    amount        DECIMAL(10,2)
+    amount        DECIMAL(10,2),
+    primary key(order_id,order_date) --order-date need to be primary key 
 )
 -- Range partition by YEAR(order_date)
 PARTITION BY RANGE (YEAR(order_date))
 -- Subpartition by HASH on MONTH(order_date)
 SUBPARTITION BY HASH (MONTH(order_date))
 -- We want 3 top-level (range) partitions
-PARTITIONS 3
+-- PARTITIONS 3 # this line shows error in MySQL
 -- Each partition splits into 2 subpartitions
 SUBPARTITIONS 2
 (
