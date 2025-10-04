@@ -1,3 +1,10 @@
+My complete SQL Masterclass Notes in Tanglish is now live! Covers 30+ topics with syntax, examples, and step-by-step explanations. 
+Perfect for both beginners and professionals to master SQL easily. Check it out here 👉 https://topmate.io/dataengineering/1697791
+
+====================================================================================
+
+
+
 Normalization in SQL is a systematic process of organizing the columns (attributes) and tables (relations) of a relational database to minimize data redundancy 
 and improve data integrity. In simpler terms, normalization helps ensure that each piece of data is stored in the best possible place, 
 reducing duplication and making it easier to maintain and update the database.
