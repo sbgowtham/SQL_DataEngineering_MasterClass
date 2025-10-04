@@ -1,3 +1,9 @@
+My complete SQL Masterclass Notes in Tanglish is now live! Covers 30+ topics with syntax, examples, and step-by-step explanations. 
+Perfect for both beginners and professionals to master SQL easily. Check it out here 👉 https://topmate.io/dataengineering/1697791
+
+====================================================================================
+
+
 In SQL, "regex" stands for "regular expression," which is a sequence of characters used to define a search pattern, allowing you to find and manipulate text data within your database by 
 matching complex patterns within strings, rather than just exact matches; essentially providing a powerful tool for searching, extracting, and validating data based on specific character patterns 
 within your SQL queries. 
